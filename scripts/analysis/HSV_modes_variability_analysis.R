@@ -1,37 +1,37 @@
-## HSV_modes_variability_analysis.R
-##
-## compute the variability within days and across days of HSV modes
-## using formulations from Naaman et. al 2012
-##
-
-setwd("~/Documents/twitter-diurnal-analysis/")
-
-library(data.table)
-library(plyr)
-library(ggplot2)
-library(plotly)
-dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
-dt$day = as.Date(dt$postedTime)
-
-##------------------------------------------------------------------------------------------
-## Reduce Hue spectrum resolution
-## Go from 180 bins to 12
-## More details here: 
-## https://github.com/myazdani/OpenCV-Hue/blob/master/scripts/Hue-spectrums.ipynb
-##------------------------------------------------------------------------------------------
-num.bins = 12
-num.steps = 180/num.bins
-bin.edges.left = seq(from = 0, to = 180, by = num.steps) #includes bin from left, but not right
-bin.edges.left[1] = 1
-bin.edges.left = c(0, bin.edges.left)
-names(bin.edges.left)[1:10] = paste0("bin.0", c(0:9))
-names(bin.edges.left)[11:length(bin.edges.left)] = paste0("bin.",c(11:length(bin.edges.left)-1))
-
-find.hue.bin = function(x){
-  return(names(bin.edges.left)[max(which(x >= bin.edges.left))])
-}
-
-dt$H.mode.binned = sapply(dt$H.mode, find.hue.bin)
+# ## HSV_modes_variability_analysis.R
+# ##
+# ## compute the variability within days and across days of HSV modes
+# ## using formulations from Naaman et. al 2012
+# ##
+# 
+# setwd("~/Documents/twitter-diurnal-analysis/")
+# 
+# library(data.table)
+# library(plyr)
+# library(ggplot2)
+# library(plotly)
+# dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
+# dt$day = as.Date(dt$postedTime)
+# 
+# ##------------------------------------------------------------------------------------------
+# ## Reduce Hue spectrum resolution
+# ## Go from 180 bins to 12
+# ## More details here: 
+# ## https://github.com/myazdani/OpenCV-Hue/blob/master/scripts/Hue-spectrums.ipynb
+# ##------------------------------------------------------------------------------------------
+# num.bins = 12
+# num.steps = 180/num.bins
+# bin.edges.left = seq(from = 0, to = 180, by = num.steps) #includes bin from left, but not right
+# bin.edges.left[1] = 1
+# bin.edges.left = c(0, bin.edges.left)
+# names(bin.edges.left)[1:10] = paste0("bin.0", c(0:9))
+# names(bin.edges.left)[11:length(bin.edges.left)] = paste0("bin.",c(11:length(bin.edges.left)-1))
+# 
+# find.hue.bin = function(x){
+#   return(names(bin.edges.left)[max(which(x >= bin.edges.left))])
+# }
+# 
+# dt$H.mode.binned = sapply(dt$H.mode, find.hue.bin)
 
 
 ##------------------------------------------------------------------------------------------
@@ -39,12 +39,13 @@ dt$H.mode.binned = sapply(dt$H.mode, find.hue.bin)
 ##------------------------------------------------------------------------------------------
 unique(dt$H.mode.binned) -> the.bins
 hue.dist = function(df){
-  freqs = as.data.frame(t(as.matrix(table(df$H.mode.binned)/sum(table(df$H.mode.binned)))))
+  freqs = as.data.frame(t(as.matrix(table(df$H.mode.binned))))
   sample.bins = names(freqs)
-  if (length(setdiff(the.bins, sample.bins) != 0){
+  if (length(setdiff(the.bins, sample.bins)) != 0){
     freqs[,setdiff(the.bins, sample.bins)] = 1
   }
   names(freqs) = paste0("H", names(freqs))
+  freqs = freqs/sum(freqs)
   return(freqs)
 }
 
@@ -53,7 +54,6 @@ as.data.frame(dt) %>%
   do(hue.dist(.)) %>% 
   as.data.frame() -> Hue.hourly.modes
 
-Hue.hourly.modes[is.na(Hue.hourly.modes)] = 0
 
 ##------------------------------------------------------------------------------------------
 ## Variability within days
