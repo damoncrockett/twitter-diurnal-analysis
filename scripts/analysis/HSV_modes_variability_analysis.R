@@ -15,6 +15,10 @@ dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
 dt$day = as.Date(dt$postedTime)
 dt$week.day = weekdays(dt$day)
 
+# remove weekends
+week.days = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+dt = dt[week.day %in% week.days]
+
 ##------------------------------------------------------------------------------------------
 ## Reduce Hue spectrum resolution
 ## Go from 180 bins to 12
@@ -116,4 +120,4 @@ ggplot(H.m, aes(x = hour, y = value, colour = city)) + geom_point() + facet_wrap
 ## save results
 ##------------------------------------------------------------------------------------------
 
-write.csv(city.entropies, file = "./data/city_diurnal_entropies.csv", row.names = FALSE, quote = FALSE)
+write.csv(city.entropies, file = "./data/city_diurnal_entropies_weekdays_only.csv", row.names = FALSE, quote = FALSE)
