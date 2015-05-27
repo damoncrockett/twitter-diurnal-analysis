@@ -22,6 +22,8 @@ dt$day = as.Date(dt$postedTime)
 num.bins = 12
 num.steps = 180/num.bins
 bin.edges.left = seq(from = 0, to = 180, by = num.steps) #includes bin from left, but not right
+bin.edges.left[1] = 1
+bin.edges.left = c(0, bin.edges.left)
 names(bin.edges.left)[1:10] = paste0("bin.0", c(0:9))
 names(bin.edges.left)[11:length(bin.edges.left)] = paste0("bin.",c(11:length(bin.edges.left)-1))
 
@@ -35,10 +37,15 @@ dt$H.mode.binned = sapply(dt$H.mode, find.hue.bin)
 ##------------------------------------------------------------------------------------------
 ## HSV mode hourly distributions for each city
 ##------------------------------------------------------------------------------------------
+unique(dt$H.mode.binned) -> the.bins
 hue.dist = function(df){
-  freqs = t(as.matrix(table(df$H.mode.binned)/sum(table(df$H.mode.binned))))
-  colnames(freqs) = paste0("H", colnames(freqs))
-  return(as.data.frame(freqs))
+  freqs = as.data.frame(t(as.matrix(table(df$H.mode.binned)/sum(table(df$H.mode.binned)))))
+  sample.bins = names(freqs)
+  if (length(setdiff(the.bins, sample.bins) != 0){
+    freqs[,setdiff(the.bins, sample.bins)] = 1
+  }
+  names(freqs) = paste0("H", names(freqs))
+  return(freqs)
 }
 
 as.data.frame(dt) %>% 
@@ -46,7 +53,7 @@ as.data.frame(dt) %>%
   do(hue.dist(.)) %>% 
   as.data.frame() -> Hue.hourly.modes
 
-Hue.hourly.modes[is.na(Hue.hourly.modes)] = 1
+Hue.hourly.modes[is.na(Hue.hourly.modes)] = 0
 
 ##------------------------------------------------------------------------------------------
 ## Variability within days
