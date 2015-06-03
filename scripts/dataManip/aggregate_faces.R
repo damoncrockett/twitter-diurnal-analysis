@@ -14,6 +14,31 @@ dt$day = as.Date(dt$postedTime)
 dt$week.day = weekdays(dt$day)
 
 
+##------------------------------------------------------------------------------------------
+## Reduce Hue spectrum resolution
+## Go from 180 bins to 12
+## More details here: 
+## https://github.com/myazdani/OpenCV-Hue/blob/master/scripts/Hue-spectrums.ipynb
+##------------------------------------------------------------------------------------------
+num.bins = 12
+num.steps = 180/num.bins
+bin.edges.left = seq(from = 0, to = 180, by = num.steps) #includes bin from left, but not right
+bin.edges.left[1] = 1
+bin.edges.left = c(0, bin.edges.left)
+names(bin.edges.left)[1:10] = paste0("bin.0", c(0:9))
+names(bin.edges.left)[11:length(bin.edges.left)] = paste0("bin.",c(11:length(bin.edges.left)-1))
+
+find.hue.bin = function(x){
+  return(names(bin.edges.left)[max(which(x >= bin.edges.left))])
+}
+
+dt$H.mode.binned = sapply(dt$H.mode, find.hue.bin)
+
+
+##------------------------------------------------------------------------------------------
+## compute aggregates of faces, hue bin 0, and "retweets"
+##------------------------------------------------------------------------------------------
+
 normalized.num.faces = function(df){
   return(data.frame(num.rows = nrow(df), 
                     num.faces.alt = sum(df$num_faces_alt), face.present.alt = length(which(df$num_faces_alt > 0)), 
@@ -21,7 +46,10 @@ normalized.num.faces = function(df){
                     solo.face.alt = length(which(df$num_faces_alt == 1)), social.face.alt = length(which(df$num_faces_alt > 1)),
                     num.faces.alt.tree = sum(df$num_faces_alt.tree), face.present.alt.tree = length(which(df$num_faces_alt.tree > 0)), 
                     solo.face.alt.tree = length(which(df$num_faces_alt.tree == 1)), social.face.alt.tree = length(which(df$num_faces_alt.tree > 1)),
-                    num.people.social.faces.alt.tree = sum(df$num_faces_alt.tree[which(df$num_faces_alt.tree > 1)])
+                    num.people.social.faces.alt.tree = sum(df$num_faces_alt.tree[which(df$num_faces_alt.tree > 1)]),
+                    bin.0.count = length(which(df$H.mode.binned == "bin.00")), num.unique.images = length(unique(df$filename)),
+                    num.unique.face.images.alt = length(unique(df$filename[which(df$num_faces_alt > 0)])),
+                    num.unique.face.images.alt.tree = length(unique(df$filename[which(df$num_faces_alt.tree > 0)]))
                     ))
 }
 
@@ -94,15 +122,15 @@ py <- plotly()
 # out <- py$ggplotly(p, kwargs=list(filename="city-social-solo-faces", fileopt="overwrite"))
 # plotly_url <- out$response$url
 
-ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = num.faces.alt/num.rows, label = city)) + geom_text() -> p
-out <- py$ggplotly(p, kwargs=list(filename="city-social-solo-faces-normalized", fileopt="overwrite"))
-plotly_url <- out$response$url
-
-ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = num.people.social.faces.alt/num.rows, label = city)) + geom_text() -> p
-out <- py$ggplotly(p, kwargs=list(filename="city-really-social-solo-faces-normalized", fileopt="overwrite"))
-plotly_url <- out$response$url
-
-
-ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = social.face.alt/num.rows, label = city)) + geom_text() -> p
-out <- py$ggplotly(p, kwargs=list(filename="city-actual-social-solo-faces-normalized", fileopt="overwrite"))
-plotly_url <- out$response$url
+# ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = num.faces.alt/num.rows, label = city)) + geom_text() -> p
+# out <- py$ggplotly(p, kwargs=list(filename="city-social-solo-faces-normalized", fileopt="overwrite"))
+# plotly_url <- out$response$url
+# 
+# ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = num.people.social.faces.alt/num.rows, label = city)) + geom_text() -> p
+# out <- py$ggplotly(p, kwargs=list(filename="city-really-social-solo-faces-normalized", fileopt="overwrite"))
+# plotly_url <- out$response$url
+# 
+# 
+# ggplot(cities.faces, aes(x = solo.face.alt/num.rows, y = social.face.alt/num.rows, label = city)) + geom_text() -> p
+# out <- py$ggplotly(p, kwargs=list(filename="city-actual-social-solo-faces-normalized", fileopt="overwrite"))
+# plotly_url <- out$response$url
