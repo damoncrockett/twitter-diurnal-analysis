@@ -10,9 +10,18 @@ library(ggplot2)
 library(plotly)
 library(reshape)
 dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
-dt$day = as.Date(dt$postedTime)
+cities.gps = read.csv("~/Desktop/boundbox_US_top_60.csv", header = TRUE, stringsAsFactors = FALSE)
+get.correct.day = function(i){
+  x = as.POSIXct(strptime(dt$postedTime[i], format = "%Y-%m-%dT%H:%M:%S"), tz = "GMT")
+  tz.str = cities.gps[which(cities.gps$city == dt$city[i]),"time.zone"]
+  return(as.IDate(format(x, tz = tz.str)))
+}
+dt$day = do.call("c", lapply(c(1:nrow(dt)), get.correct.day))
 dt$week.day = weekdays(dt$day)
 
+# remove weekends
+week.days = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+dt = dt[week.day %in% week.days]
 
 ##------------------------------------------------------------------------------------------
 ## Reduce Hue spectrum resolution
@@ -102,8 +111,8 @@ faces.diurnal.probs %>%
 ## save results
 ##------------------------------------------------------------------------------------------
 
-write.csv(cities.faces, file = "./data/city_faces.csv", row.names = FALSE, quote = FALSE)
-write.csv(city.entropies, file = "./data/city_diurnal_faces_entropies.csv", row.names = FALSE, quote = FALSE)
+write.csv(cities.faces, file = "./data/city_faces_weekends_removed.csv", row.names = FALSE, quote = FALSE)
+write.csv(city.entropies, file = "./data/city_diurnal_faces_entropies_weekends_removed.csv", row.names = FALSE, quote = FALSE)
 
 ##------------------------------------------------------------------------------------------
 ## visualize results
