@@ -33,14 +33,15 @@ names(cities.entropy)[-1] = paste0(names(cities.entropy)[-1], ".entropy")
 city.color.corr = read.csv("./data/city_correlation_HUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
 city.hue.corr = read.csv("./data/cities_hue_dist_corr_mean.csv", header = TRUE, stringsAsFactors = FALSE)
 
-df = join_all(list(cities.entropy, cities.faces, cities.modes.entropy, df.demographic, city.color.corr, city.hue.corr))
+#df = join_all(list(cities.entropy, cities.faces, cities.modes.entropy, df.demographic, city.color.corr, city.hue.corr))
+df = join_all(list(cities.entropy, cities.faces, cities.modes.entropy, df.demographic, city.color.corr))
 
 ##
 ## linear modelling of housing prices
 ##
-
-housing.census = lm(median.2013 ~ income + disabled + unemployed + bachelors, data = df)
+df = subset(df, city != "St. Louis")
+housing.census = lm(median.2013 ~ bachelors+disabled+income+pop+unemployed, data = df)
 summary(housing.census)
 
-housing.twitter = lm(median.2013 ~ solo.face.rate.alt.tree.entropy + num.rows/pop + hue.corr + solo.face.alt.tree/pop, data = df)
-summary(housing.twitter)                              
+housing.twitter = lm(median.2013 ~ Hbin.08 + Hbin.11  +  I(face.present.alt/num.rows) + log(I(face.present.alt/num.rows)) +  I(num.people.social.faces.alt/num.rows) + log(I(num.people.social.faces.alt/num.rows)) +  I(social.face.alt/num.rows) +log(I(social.face.alt/num.rows)), data = df)
+summary(housing.twitter)
