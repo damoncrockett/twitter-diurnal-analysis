@@ -24,6 +24,20 @@ Mode <- function(x) {
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-com.mode = data.frame(lon = Mode(round(dt$lon,2)), lat = Mode(round(dt$lat,2)))
+#com.mode = data.frame(lon = Mode(round(dt$lon,2)), lat = Mode(round(dt$lat,2)))
 
-boston.bombing.17 = subset(dt, day == "2013-04-17")
+#boston.bombing.17 = subset(dt, day == "2013-04-17")
+
+
+images = list.files("~/Documents/twitter_data_grant/images/boston_bombin/", full.names = FALSE)
+
+boston.bombing = subset(dt, filename %in% images)
+
+days.to.study = unique(boston.bombing$day)
+
+for (i in c(1:length(days.to.study))){
+  boston.day = subset(boston.bombing, day == days.to.study[i])
+  boston.day$filename = paste0("/Users/myazdaniUCSD/Documents/twitter_data_grant/images/boston_bombin/", boston.day$filename)
+  boston.day = rbind(data.frame(filename = rep("/Users/myazdaniUCSD/Desktop/black-thumb.png", 24), hour = c(0:23), H.mode = -1), boston.day[,c("filename", "hour", "H.mode"), with = FALSE])
+  write.table(boston.day, file = paste0("~/Desktop/boston-",days.to.study[i], ".csv"), sep = ",", row.names = FALSE, quote = FALSE, col.names = FALSE)
+}
