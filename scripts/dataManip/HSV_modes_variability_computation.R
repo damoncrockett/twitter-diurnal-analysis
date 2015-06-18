@@ -15,7 +15,40 @@ dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
 dt$day = as.Date(dt$postedTime)
 dt$week.day = weekdays(dt$day)
 
-# remove weekends
+
+
+##----------------------------------------------------------------
+##
+## merge with weather
+##
+##----------------------------------------------------------------
+
+dt.weather = fread("~/Dropbox/TwitterPaper/data/US_HSV_modes_top60_cities_weather.csv", header = TRUE)
+
+setkey(dt.weather, image.path)
+setkey(dt, file_path)
+dt.just.weather = dt.weather[,setdiff(names(dt.weather), names(dt)), with = FALSE]
+rm(dt.weather)
+gc()
+
+res = unique(dt[dt.just.weather])
+rm(dt)
+rm(dt.just.weather)
+gc()
+
+##----------------------------------------------------------------
+##
+## subset by sky condition
+##
+##----------------------------------------------------------------
+
+
+##----------------------------------------------------------------
+##
+## subset by weekday or weekend
+##
+##----------------------------------------------------------------
+
 week.days = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 dt = dt[week.day %in% week.days]
 
