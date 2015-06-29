@@ -25,8 +25,13 @@ f$RegionName[which(f$RegionName == "Saint Louis")] = "St. Louis"
 df.demographic = f[,c("RegionName", "bachelors", "disabled", "income", "pop", "unemployed", "median.2013")]
 names(df.demographic)[1] = "city"
 
-df.demographic$log.pop = log(df.demographic$pop)
-df.demographic$log.median.2013 = log(df.demographic$median.2013)
+##---------------------------------------------------------------------------------
+##
+## load gallup data
+##
+##---------------------------------------------------------------------------------
+# gallup = read.csv("~/Dropbox/TwitterPaper/data/demographic-data/gallup.txt", header = TRUE, stringsAsFactors = FALSE)
+# df = merge(gallup,f)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -38,8 +43,8 @@ cities.entropy = read.csv("./data/features/city_diurnal_faces_entropies.csv", he
 cities.modes.entropy = read.csv("./data/features/city_diurnal_entropies.csv", header = TRUE, stringsAsFactors = FALSE)
 names(cities.entropy)[-1] = paste0(names(cities.entropy)[-1], ".entropy")
 
-city.color.corr = read.csv("./data/city_correlation_HUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
-city.hue.corr = read.csv("./data/cities_hue_dist_corr_mean.csv", header = TRUE, stringsAsFactors = FALSE)
+city.color.corr = read.csv("./data/features/city_correlation_HUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
+city.hue.corr = read.csv("./data/features/cities_hue_dist_corr_mean.csv", header = TRUE, stringsAsFactors = FALSE)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -54,11 +59,22 @@ df = join_all(list(cities.entropy, cities.faces, cities.modes.entropy, df.demogr
 ## linear modelling of housing prices
 ##
 ##---------------------------------------------------------------------------------
-housing.census = lm(median.2013 ~ bachelors+disabled+income+pop+unemployed, data = df)
+housing.census = lm(median.2013 ~ bachelors+disabled+income+unemployed + pop, data = df)
 summary(housing.census)
 
-housing.twitter = lm(median.2013 ~ Hbin.08 + Hbin.11  +  I(face.present.alt/num.rows) + log(I(face.present.alt/num.rows)) +  
-                       I(num.people.social.faces.alt/num.rows) + log(I(num.people.social.faces.alt/num.rows)) + 
-                       I(social.face.alt/num.rows) +log(I(social.face.alt/num.rows)), data = df)
+tweet.predictors = names(df)[-which(names(df) %in% c("city", "bachelors", "disabled", "income", "pop", "unemployed", "median.2013"))]
+tweet.raw.counts = c("num.faces.alt", "face.present.alt","num.people.social.faces.alt","solo.face.alt","social.face.alt", "bin.0.count", "num.unique.images" ,"num.unique.face.images.alt",
+                     "num.faces.alt.tree", "face.present.alt.tree","num.people.social.faces.alt.tree","solo.face.alt.tree","social.face.alt.tree", "num.unique.face.images.alt.tree")
+df[,tweet.raw.counts] = df[,tweet.raw.counts]/df$num.rows
 
-print(summary(housing.twitter))
+
+tweet.predictor.combs = combn(tweet.predictors, 5, simplify = FALSE)
+
+median.2013.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(median.2013 ~ ., data = df[,c("median.2013", x)]))$r.squared)
+head(median.2013.R.squared[order(median.2013.R.squared, decreasing = TRUE)], 6)
+head(tweet.predictor.combs[order(median.2013.R.squared, decreasing = TRUE)], 6)
+
+housing.twitter = lm(median.2013 ~ I(social.face.alt/num.people.social.faces.alt) + I(social.face.alt/face.present.alt) + bin.0.count  + Hbin.08 + log(num.rows*num.unique.face.images.alt), data = df)
+print(summary(housing.twitter)$r.squared)
+
+
