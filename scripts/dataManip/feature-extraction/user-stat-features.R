@@ -56,7 +56,7 @@ as.data.frame(dt) %>%
   as.data.frame() -> user.activies.df
 
 user.activies.df[is.na(user.activies.df)] = 0
-write.csv(user.activies.df, file = './data/features/user_stats.csv', row.names = FALSE, quote = FALSE)
+write.csv(user.activies.df, file = './data/features/user-features/user_stats.csv', row.names = FALSE, quote = FALSE)
 
 
 ##------------------------------------------------------------------------------------------
@@ -81,5 +81,5 @@ user.activies.df %>%
   do(city.user.stats(.)) %>% 
   as.data.frame() -> city.user.agg
 
-write.csv(city.user.agg, file = "./data/features/user_agg_stats.csv", row.names = FALSE, quote = FALSE)
+write.csv(city.user.agg, file = "./data/features/user-features/user_agg_stats.csv", row.names = FALSE, quote = FALSE)
 
