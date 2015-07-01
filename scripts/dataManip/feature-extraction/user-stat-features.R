@@ -59,6 +59,12 @@ user.activies.df[is.na(user.activies.df)] = 0
 write.csv(user.activies.df, file = './data/features/user_stats.csv', row.names = FALSE, quote = FALSE)
 
 
+##------------------------------------------------------------------------------------------
+## 
+## Aggregate user statistics for each city
+##
+##------------------------------------------------------------------------------------------
+
 city.user.stats = function(df){
   num.img.quantile.df = as.data.frame(t(quantile(df$num.images, probs = c(.5, .8, .85, .9, .95, 1))))
   names(num.img.quantile.df) = paste0("num.imgs.q", names(num.img.quantile.df)) 
