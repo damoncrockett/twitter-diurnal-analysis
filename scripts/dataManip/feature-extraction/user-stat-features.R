@@ -66,10 +66,10 @@ write.csv(user.activies.df, file = './data/features/user-features/user_stats.csv
 ##------------------------------------------------------------------------------------------
 
 city.user.stats = function(df){
-  num.img.quantile.df = as.data.frame(t(quantile(df$num.images, probs = c(.5, .8, .85, .9, .95, 1))))
+  num.img.quantile.df = as.data.frame(t(quantile(df$num.images, probs = c(.95, 1))))
   names(num.img.quantile.df) = paste0("num.imgs.q", names(num.img.quantile.df)) 
   
-  num.cities.quantile.df = as.data.frame(t(quantile(df$num.cities, probs = c(.5, .8, .85, .9, .95, 1))))
+  num.cities.quantile.df = as.data.frame(t(quantile(df$num.cities, probs = c(.95, 1))))
   names(num.cities.quantile.df) = paste0("num.cities.q", names(num.cities.quantile.df)) 
   
   city.user.df = data.frame(num.users = length(unique(df$actor)), hue.mode = Mode(df$typical.hue))
