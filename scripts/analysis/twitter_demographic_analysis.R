@@ -80,12 +80,25 @@ tweet.raw.counts = c("num.faces.alt", "face.present.alt","num.people.social.face
                      "num.users", "num.imgs.q95.", "num.imgs.q100.")
 df[,tweet.raw.counts] = df[,tweet.raw.counts]/df$num.rows
 
-tweet.predictor.combs = combn(tweet.predictors, 5, simplify = FALSE)
+
+num.predictors = 4
+tweet.predictor.combs = combn(tweet.predictors, num.predictors, simplify = FALSE)
 
 
 display.helper = function(x){
-  print(head(x[order(x, decreasing = TRUE)], 6))
-  print(head(tweet.predictor.combs[order(x, decreasing = TRUE)], 6))
+  print("*************************************************************************")
+  print("top 3 R-squared using twitter predictors")
+  print(head(x[order(x, decreasing = TRUE)], 3))
+  print(head(tweet.predictor.combs[order(x, decreasing = TRUE)], 3))
+}
+
+
+write.results = function(census.model, twitter.model){
+  out<-capture.output(summary(census.model))
+  cat(out,file="results/out.txt",sep="\n",append=TRUE)
+  out<-capture.output(display.helper(twitter.model))
+  cat(out,file="results/out.txt",sep="\n",append=TRUE)
+  
 }
 
 ##---------------------------------------------------------------------------------
@@ -93,17 +106,10 @@ display.helper = function(x){
 ## linear modelling of housing prices
 ##
 ##---------------------------------------------------------------------------------
-housing.census = lm(median.2013 ~ bachelors+disabled+income+unemployed + pop, data = df)
-summary(housing.census)
-
-
-print("running all combination of predictors")
+housing.census = lm(median.2013 ~ bachelors+disabled+income+unemployed, data = df)
 median.2013.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(median.2013 ~ ., data = df[,c("median.2013", x)]))$r.squared)
 
-#housing.twitter = lm(median.2013 ~ I(social.face.alt/num.people.social.faces.alt) + I(social.face.alt/face.present.alt) + bin.0.count  + Hbin.08 + log(I(num.unique.face.images.alt*num.rows)), data = df)
-housing.twitter = lm(median.2013 ~ I(face.present.alt/solo.face.alt) + bin.0.count +  log(I(social.face.alt/num.people.social.faces.alt)) + num.rows, data = df)
-print(summary(housing.twitter)$r.squared)
-
+write.results(housing.census, median.2013.R.squared)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -111,15 +117,10 @@ print(summary(housing.twitter)$r.squared)
 ##
 ##---------------------------------------------------------------------------------
 rm(median.2013.R.squared)
-income.census = lm(income ~ bachelors+disabled +unemployed , data = df)
-print(summary(income.census))
-
-
-print("running all combination of predictors")
+income.census = lm(income ~ bachelors+disabled +unemployed + median.2013, data = df)
 income.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(income ~ ., data = df[,c("income", x)]))$r.squared)
-print(head(income.R.squared[order(income.R.squared, decreasing = TRUE)], 6))
-print(head(tweet.predictor.combs[order(income.R.squared, decreasing = TRUE)], 6))
 
+write.results(income.census, income.R.squared)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -128,12 +129,9 @@ print(head(tweet.predictor.combs[order(income.R.squared, decreasing = TRUE)], 6)
 ##---------------------------------------------------------------------------------
 rm(income.R.squared)
 bachelors.census = lm(bachelors ~ income+disabled +unemployed + median.2013, data = df)
-print(summary(bachelors.census))
-
-
-print("running all combination of predictors")
 bachelors.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(bachelors ~ ., data = df[,c("bachelors", x)]))$r.squared)
-display.helper(bachelors.R.squared)
+
+write.results(bachelors.census, bachelors.R.squared)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -142,12 +140,9 @@ display.helper(bachelors.R.squared)
 ##---------------------------------------------------------------------------------
 rm(bachelors.R.squared)
 unemployed.census = lm(unemployed ~ income+disabled + bachelors + median.2013, data = df)
-print(summary(unemployed.census))
-
-
-print("running all combination of predictors")
 unemployed.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(unemployed ~ ., data = df[,c("unemployed", x)]))$r.squared)
-display.helper(unemployed.R.squared)
+
+write.results(unemployed.census, unemployed.R.squared)
 
 ##---------------------------------------------------------------------------------
 ##
@@ -156,9 +151,7 @@ display.helper(unemployed.R.squared)
 ##---------------------------------------------------------------------------------
 rm(unemployed.R.squared)
 disabled.census = lm(disabled ~ income+ unemployed+ bachelors + median.2013, data = df)
-print(summary(disabled.census))
-
-
-print("running all combination of predictors")
 disabled.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(disabled ~ ., data = df[,c("disabled", x)]))$r.squared)
-display.helper(disabled.R.squared)
+
+write.results(disabled.census, disabled.R.squared)
+
