@@ -85,8 +85,13 @@ num.predictors = 4
 tweet.predictor.combs = combn(tweet.predictors, num.predictors, simplify = FALSE)
 
 
+##---------------------------------------------------------------------------------
+##
+## helper functions
+##
+##---------------------------------------------------------------------------------
+
 display.helper = function(x){
-  print("*************************************************************************")
   print("top 3 R-squared using twitter predictors")
   print(head(x[order(x, decreasing = TRUE)], 3))
   print(head(tweet.predictor.combs[order(x, decreasing = TRUE)], 3))
@@ -94,6 +99,8 @@ display.helper = function(x){
 
 
 write.results = function(census.model, twitter.model){
+  out = capture.output(print("*************************************************************************"))
+  cat(out,file="results/out.txt",sep="\n",append=TRUE)
   out<-capture.output(summary(census.model))
   cat(out,file="results/out.txt",sep="\n",append=TRUE)
   out<-capture.output(display.helper(twitter.model))
@@ -116,7 +123,6 @@ write.results(housing.census, median.2013.R.squared)
 ## linear modelling of incomes
 ##
 ##---------------------------------------------------------------------------------
-rm(median.2013.R.squared)
 income.census = lm(income ~ bachelors+disabled +unemployed + median.2013, data = df)
 income.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(income ~ ., data = df[,c("income", x)]))$r.squared)
 
@@ -127,7 +133,6 @@ write.results(income.census, income.R.squared)
 ## linear modelling of education
 ##
 ##---------------------------------------------------------------------------------
-rm(income.R.squared)
 bachelors.census = lm(bachelors ~ income+disabled +unemployed + median.2013, data = df)
 bachelors.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(bachelors ~ ., data = df[,c("bachelors", x)]))$r.squared)
 
@@ -138,7 +143,6 @@ write.results(bachelors.census, bachelors.R.squared)
 ## linear modelling of unemployment
 ##
 ##---------------------------------------------------------------------------------
-rm(bachelors.R.squared)
 unemployed.census = lm(unemployed ~ income+disabled + bachelors + median.2013, data = df)
 unemployed.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(unemployed ~ ., data = df[,c("unemployed", x)]))$r.squared)
 
@@ -149,7 +153,6 @@ write.results(unemployed.census, unemployed.R.squared)
 ## linear modelling of disability
 ##
 ##---------------------------------------------------------------------------------
-rm(unemployed.R.squared)
 disabled.census = lm(disabled ~ income+ unemployed+ bachelors + median.2013, data = df)
 disabled.R.squared = sapply(tweet.predictor.combs, FUN = function(x) summary(lm(disabled ~ ., data = df[,c("disabled", x)]))$r.squared)
 
