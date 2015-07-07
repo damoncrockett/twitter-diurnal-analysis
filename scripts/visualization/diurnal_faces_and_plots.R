@@ -4,7 +4,8 @@
 library(data.table)
 library(plyr)
 library(ggplot2)
-dt = fread("~/Documents/twitter_data_grant/processedData/top60_faces_alt_tree_HSV.csv", header = TRUE)
+#dt = fread("~/Documents/twitter_data_grant/processedData/top60_faces_alt_tree_HSV.csv", header = TRUE)
+dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
 dt.clean = na.omit(dt)
 
 normalized.num.faces = function(df){
