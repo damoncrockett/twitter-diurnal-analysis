@@ -1,0 +1,200 @@
+[1] "*************************************************************************"
+
+Call:
+lm(formula = median.2013 ~ bachelors + disabled + income + unemployed + 
+    pop, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-120046  -53633  -18444   27138  316905 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -3.061e+05  1.501e+05  -2.040   0.0463 *  
+bachelors    9.998e+02  1.570e+03   0.637   0.5270    
+disabled    -8.636e+03  7.375e+03  -1.171   0.2467    
+income       1.011e+01  1.817e+00   5.562  8.5e-07 ***
+unemployed   1.074e+04  4.768e+03   2.252   0.0284 *  
+pop          2.846e-02  1.085e-02   2.622   0.0113 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 93160 on 54 degrees of freedom
+Multiple R-squared:  0.6503,	Adjusted R-squared:  0.6179 
+F-statistic: 20.08 on 5 and 54 DF,  p-value: 2.912e-11
+
+[1] "top 3 R-squared using twitter predictors"
+[1] 0.6660064 0.6639014 0.6600642
+[[1]]
+[1] "num.faces.alt"              "num.unique.images"          "num.unique.face.images.alt"
+[4] "num.users"                  "num.imgs.q100."            
+
+[[2]]
+[1] "num.faces.alt"              "num.unique.images"          "num.unique.face.images.alt"
+[4] "num.users"                  "num.cities.q100."          
+
+[[3]]
+[1] "num.faces.alt"              "num.unique.images"          "num.unique.face.images.alt"
+[4] "num.users"                  "num.cities.q95."           
+
+[1] "*************************************************************************"
+
+Call:
+lm(formula = income ~ bachelors + disabled + unemployed + median.2013 + 
+    pop, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-20978.4  -2358.7   -242.7   3165.4  14144.3 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  5.038e+04  6.284e+03   8.017 9.27e-11 ***
+bachelors    2.128e+02  8.957e+01   2.376   0.0211 *  
+disabled    -1.035e+03  4.232e+02  -2.446   0.0178 *  
+unemployed  -3.992e+02  2.928e+02  -1.363   0.1784    
+median.2013  3.604e-02  6.480e-03   5.562 8.50e-07 ***
+pop         -1.315e-03  6.645e-04  -1.978   0.0530 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5564 on 54 degrees of freedom
+Multiple R-squared:  0.7383,	Adjusted R-squared:  0.714 
+F-statistic: 30.47 on 5 and 54 DF,  p-value: 1.396e-14
+
+[1] "top 3 R-squared using twitter predictors"
+[1] 0.6206867 0.6145658 0.6138791
+[[1]]
+[1] "num.faces.alt.tree"         "num.unique.images"          "num.unique.face.images.alt"
+[4] "Hbin.02"                    "num.users"                 
+
+[[2]]
+[1] "face.present.alt"   "num.faces.alt.tree" "Hbin.09"            "Hbin.11"            "num.users"         
+
+[[3]]
+[1] "num.people.social.faces.alt" "social.face.alt"             "num.faces.alt.tree"         
+[4] "bin.0.count"                 "Hbin.11"                    
+
+[1] "*************************************************************************"
+
+Call:
+lm(formula = bachelors ~ income + disabled + unemployed + median.2013 + 
+    pop, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-20.6727  -5.3909  -0.0933   4.4464  18.4929 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)  
+(Intercept)  1.371e+01  1.332e+01   1.030   0.3077  
+income       4.447e-04  1.872e-04   2.376   0.0211 *
+disabled     1.544e-01  6.445e-01   0.240   0.8115  
+unemployed  -6.858e-01  4.203e-01  -1.632   0.1086  
+median.2013  7.453e-06  1.171e-05   0.637   0.5270  
+pop          1.079e-07  9.948e-07   0.108   0.9140  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.043 on 54 degrees of freedom
+Multiple R-squared:  0.4167,	Adjusted R-squared:  0.3627 
+F-statistic: 7.715 on 5 and 54 DF,  p-value: 1.563e-05
+
+[1] "top 3 R-squared using twitter predictors"
+[1] 0.6361995 0.6283104 0.6262649
+[[1]]
+[1] "social.face.rate.alt.tree.entropy" "face.present.alt"                 
+[3] "num.unique.face.images.alt.tree"   "Hbin.04"                          
+[5] "Hbin.08"                          
+
+[[2]]
+[1] "social.face.rate.alt.tree.entropy" "face.present.alt"                 
+[3] "num.unique.face.images.alt.tree"   "Hbin.04"                          
+[5] "Hbin.06"                          
+
+[[3]]
+[1] "social.face.rate.alt.tree.entropy" "face.present.alt"                 
+[3] "num.unique.face.images.alt.tree"   "Hbin.04"                          
+[5] "num.imgs.q100."                   
+
+[1] "*************************************************************************"
+
+Call:
+lm(formula = unemployed ~ income + disabled + bachelors + median.2013 + 
+    pop, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.7221 -1.9018 -0.1994  1.6957  8.3429 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  6.037e+00  4.170e+00   1.448  0.15346    
+income      -8.335e-05  6.114e-05  -1.363  0.17845    
+disabled     6.496e-01  1.836e-01   3.537  0.00084 ***
+bachelors   -6.851e-02  4.199e-02  -1.632  0.10857    
+median.2013  7.997e-06  3.551e-06   2.252  0.02839 *  
+pop          1.141e-07  3.141e-07   0.363  0.71778    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.542 on 54 degrees of freedom
+Multiple R-squared:  0.4366,	Adjusted R-squared:  0.3845 
+F-statistic:  8.37 on 5 and 54 DF,  p-value: 6.518e-06
+
+[1] "top 3 R-squared using twitter predictors"
+[1] 0.4961827 0.4880953 0.4872308
+[[1]]
+[1] "social.face.rate.alt.tree.entropy" "face.present.alt"                 
+[3] "solo.face.alt.tree"                "Hbin.02"                          
+[5] "Hbin.08"                          
+
+[[2]]
+[1] "social.face.rate.alt.tree.entropy" "face.present.alt"                 
+[3] "solo.face.alt.tree"                "Hbin.02"                          
+[5] "Hbin.09"                          
+
+[[3]]
+[1] "social.face.rate.alt.tree.entropy" "num.unique.face.images.alt"       
+[3] "num.unique.face.images.alt.tree"   "Hbin.02"                          
+[5] "Hbin.08"                          
+
+[1] "*************************************************************************"
+
+Call:
+lm(formula = disabled ~ income + unemployed + bachelors + median.2013 + 
+    pop, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.2137 -1.1634  0.2303  1.0130  3.9288 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.463e+01  2.021e+00   7.240 1.68e-09 ***
+income      -9.634e-05  3.939e-05  -2.446  0.01775 *  
+unemployed   2.896e-01  8.187e-02   3.537  0.00084 ***
+bachelors    6.878e-03  2.870e-02   0.240  0.81154    
+median.2013 -2.867e-06  2.449e-06  -1.171  0.24675    
+pop         -2.465e-07  2.073e-07  -1.189  0.23955    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.697 on 54 degrees of freedom
+Multiple R-squared:  0.5879,	Adjusted R-squared:  0.5498 
+F-statistic: 15.41 on 5 and 54 DF,  p-value: 2.123e-09
+
+[1] "top 3 R-squared using twitter predictors"
+[1] 0.4526190 0.4449455 0.4426625
+[[1]]
+[1] "social.face.rate.alt.entropy" "face.present.alt"             "num.faces.alt.tree"          
+[4] "Hbin.09"                      "num.cities.q95."             
+
+[[2]]
+[1] "social.face.rate.alt.entropy"    "num.unique.face.images.alt"      "num.unique.face.images.alt.tree"
+[4] "Hbin.05"                         "Hbin.09"                        
+
+[[3]]
+[1] "social.face.rate.alt.entropy"    "num.unique.face.images.alt"      "num.unique.face.images.alt.tree"
+[4] "Hbin.09"                         "Hbin.10"                        
+
