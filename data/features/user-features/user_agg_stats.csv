@@ -1,0 +1,61 @@
+dom.city,num.users,hue.mode,num.imgs.q95%,num.imgs.q100%,num.cities.q95%,num.cities.q100%
+albuquerque,4399,bin.00,31.0999999999995,2070,2,31
+anaheim,12214,bin.00,26,2809,3,15
+arlington,958,bin.00,28.15,606,3,6
+atlanta,21267,bin.00,15,348,2,17
+aurora,2631,bin.00,34.5,919,2,8
+austin,20271,bin.00,30,922,3,20
+bakersfield,3194,bin.00,48.3499999999999,1098,2,6
+baltimore,8996,bin.00,21,682,2,11
+boston,30336,bin.00,22,836,2,14
+charlotte,14310,bin.00,23,1403,2,13
+chicago,51130,bin.00,24,1236,2,25
+cleveland,10089,bin.00,26,879,2,15
+colorado springs,3592,bin.00,30,1565,3,10
+columbus,14339,bin.00,28,2028,2,19
+corpus christi,3545,bin.00,38,869,2,8
+dallas,28863,bin.00,37,3116,3,19
+denver,14734,bin.00,22,1195,2,16
+detroit,12329,bin.00,20,799,2,10
+el paso,4204,bin.00,27,699,2,8
+fort worth,23660,bin.00,45,1478,3,24
+fresno,4560,bin.00,40,832,2,8
+houston,40476,bin.00,38,2373,2,20
+indianapolis,14001,bin.00,21,572,2,20
+jacksonville,9292,bin.00,31,1597,2,13
+kansas city,14111,bin.00,25,690,2,14
+las vegas,11667,bin.00,35,1063,2,13
+lexington,5217,bin.00,28,1007,2,15
+long beach,3844,bin.00,45.8499999999999,616,4,8
+los angeles,84052,bin.00,34,4080,3,21
+louisville,7491,bin.00,23,1953,2,13
+memphis,7800,bin.00,24,391,2,12
+mesa,5873,bin.00,55,941,3,17
+miami,15585,bin.00,18,742,2,18
+milwaukee,10295,bin.00,28,1014,2,23
+minneapolis,11299,bin.00,17,615,2,13
+nashville,16769,bin.00,22,830,2,13
+new orleans,10941,bin.00,20,1320,3,25
+new york,142537,bin.00,25,4494,2,48
+oakland,7317,bin.00,25,951,3,11
+oklahoma city,9799,bin.00,36,679,2,9
+omaha,5849,bin.00,34,548,2,8
+philadelphia,29342,bin.00,28,3127,2,22
+phoenix,19274,bin.00,36,1007,3,15
+portland,12310,bin.00,27,1064,2,22
+raleigh,8527,bin.00,23,532,2,19
+riverside,4312,bin.00,39,3995,3,8
+sacramento,6343,bin.00,33,1532,3,19
+san antonio,20471,bin.00,42.5,8458,2,10
+san diego,25581,bin.00,33,1422,3,14
+san francisco,29237,bin.00,24,1354,3,24
+san jose,11374,bin.00,36,972,3,16
+santa ana,3086,bin.00,27,964,3,12
+seattle,14176,bin.00,21,350,2,19
+st. louis,8641,bin.00,17,659,2,11
+tampa,14537,bin.00,30,889,2,13
+tucson,5472,bin.00,43,844,3,8
+tulsa,5741,bin.00,32,1102,2,14
+virginia beach,5807,bin.00,26,1025,2,11
+washington,30017,bin.00,22,761,3,25
+wichita,4726,bin.00,45,1030,2,9
