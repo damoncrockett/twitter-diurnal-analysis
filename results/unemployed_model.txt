@@ -1,0 +1,45 @@
+
+Call:
+lm(formula = unemployed ~ ., data = df.rel[, c(twitter.features, 
+    "unemployed")])
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.1068 -1.4977 -0.0096  1.5817  6.2155 
+
+Coefficients: (2 not defined because of singularities)
+                               Estimate Std. Error t value Pr(>|t|)   
+(Intercept)                   -4341.064   1636.331  -2.653  0.01192 * 
+face.present.rate.alt.entropy  1053.646    641.078   1.644  0.10922   
+solo.face.rate.alt.entropy     -923.123    606.655  -1.522  0.13708   
+social.face.rate.alt.entropy   -146.584     71.306  -2.056  0.04733 * 
+num.faces.alt                   645.713    912.153   0.708  0.48370   
+face.present.alt               -424.337    938.185  -0.452  0.65385   
+num.people.social.faces.alt    -486.824    583.894  -0.834  0.41007   
+solo.face.alt                        NA         NA      NA       NA   
+social.face.alt                      NA         NA      NA       NA   
+bin.0.count                      31.901     65.150   0.490  0.62743   
+num.unique.images                22.580     51.384   0.439  0.66304   
+num.unique.face.images.alt     -173.426    298.635  -0.581  0.56514   
+Hbin.00                         318.556    380.862   0.836  0.40860   
+Hbin.01                         -70.968    209.007  -0.340  0.73623   
+Hbin.02                         553.491    376.198   1.471  0.15015   
+Hbin.03                          95.060    122.499   0.776  0.44296   
+Hbin.04                         -21.281     38.355  -0.555  0.58253   
+Hbin.05                         -15.770     19.015  -0.829  0.41254   
+Hbin.06                         -10.596     38.245  -0.277  0.78336   
+Hbin.07                          41.812     91.816   0.455  0.65164   
+Hbin.08                           6.963    101.888   0.068  0.94591   
+Hbin.09                         459.740    144.593   3.180  0.00308 **
+Hbin.10                         -36.428     31.511  -1.156  0.25549   
+Hbin.11                         -33.762     30.593  -1.104  0.27729   
+Hbin.12                          88.006     90.950   0.968  0.33987   
+hue.corr                         -1.810      7.230  -0.250  0.80384   
+num.users                        58.457     20.396   2.866  0.00699 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.818 on 35 degrees of freedom
+Multiple R-squared:  0.5513,	Adjusted R-squared:  0.2436 
+F-statistic: 1.792 on 24 and 35 DF,  p-value: 0.05667
+

@@ -32,7 +32,7 @@ as.data.frame(dt) %>%
 ## extract city subsets based on COM
 ##
 ##------------------------------------------------------------------------------
-bbox_radius = .02
+bbox_radius = .01
 
 city.subset = function(df){
   com.mode = data.frame(lon = Mode(round(df$lon,2)), lat = Mode(round(df$lat,2)))

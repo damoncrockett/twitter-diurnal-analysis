@@ -18,7 +18,7 @@ dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
 ##------------------------------------------------------------------------------
 as.data.frame(table(dt$city)) -> cities.fr
 
-top.20 = as.character(cities.fr[order(cities.fr$Freq, decreasing = FALSE)[c(1:20)], "Var1"])
+top.20 = as.character(cities.fr[order(cities.fr$Freq, decreasing = TRUE)[c(1:20)], "Var1"])
 top.20.cities = subset(dt, city %in% top.20)
 
 
@@ -28,12 +28,12 @@ top.20.cities = subset(dt, city %in% top.20)
 ##
 ##------------------------------------------------------------------------------
 get.sub.sample = function(df){
-  if (nrow(df) < 10000){
+  if (nrow(df) < 50000){
     # sample with replacement
-    df.sub = df[sample(c(1:nrow(df)), size = 10000, replace = TRUE),] 
+    df.sub = df[sample(c(1:nrow(df)), size = 50000, replace = TRUE),] 
   }
   else{
-    df.sub = df[sample(c(1:nrow(df)), size = 10000, replace = FALSE),] 
+    df.sub = df[sample(c(1:nrow(df)), size = 50000, replace = FALSE),] 
   }
   return(df.sub)
 }

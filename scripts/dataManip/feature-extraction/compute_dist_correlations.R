@@ -27,12 +27,12 @@ library(ggplot2)
 pca.H = cbind(NYC[,c(1,2)], return_PCA(NYC[,-c(1,2)]))
 p = ggplot(pca.H, aes(x = PC1, y = PC2, label = hour)) + geom_text() 
 
-s.df.1 = read.csv("./data/HSV_hourly_agg_using_STDmean/top16_hourly_AVG_using_SAT_probs.csv", header = TRUE, stringsAsFactors = FALSE)
-s.df.2 = read.csv("./data/HSV_hourly_agg_using_STDmean/remaining_cities_hourly_AVG_using_SAT_probs.csv", header = TRUE, stringsAsFactors = FALSE)
+s.df.1 = read.csv("./data/HSV_hourly_agg_using_mean/top16_hourly_AVG_using_SAT_probs.csv", header = TRUE, stringsAsFactors = FALSE)
+s.df.2 = read.csv("./data/HSV_hourly_agg_using_mean/remaining_cities_hourly_AVG_using_SAT_probs.csv", header = TRUE, stringsAsFactors = FALSE)
 s.df = rbind(s.df.1, s.df.2)
 
-v.df.1 = read.csv("./data/HSV_hourly_agg_using_STDmean/top16_hourly_AVG_using_VALUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
-v.df.2 = read.csv("./data/HSV_hourly_agg_using_STDmean/remaining_cities_hourly_AVG_using_VALUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
+v.df.1 = read.csv("./data/HSV_hourly_agg_using_mean/top16_hourly_AVG_using_VALUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
+v.df.2 = read.csv("./data/HSV_hourly_agg_using_mean/remaining_cities_hourly_AVG_using_VALUE_probs.csv", header = TRUE, stringsAsFactors = FALSE)
 v.df = rbind(v.df.1, v.df.2)
 
 #####-------------------------------------
@@ -82,10 +82,14 @@ names(cities.value.dist.corr)[4] = "value.dist"
 
 rm(h.df, h.df.1, h.df.2, s.df, s.df.1, s.df.2, v.df, v.df.1, v.df.2)
 gc()
+names(cities.hue.dist.corr)[3] = "dist.hours.distances.H"
+names(cities.sat.dist.corr)[3] = "dist.hours.distances.S"
+names(cities.value.dist.corr)[3] = "dist.hours.distances.V"
 
 #res = join_all(list(cities.hue.dist.corr, cities.sat.dist.corr, cities.value.dist.corr), by = c("city", "pairs"))
 
-write.csv(cities.hue.dist.corr, file = "./data/cities_hue_dist_corr_mean.csv", row.names = FALSE, quote = FALSE)
+#write.csv(cities.hue.dist.corr, file = "./data/cities_hue_dist_corr_mean.csv", row.names = FALSE, quote = FALSE)
+write.csv(res, file = "./data/cities_HSV_dist_corr_mean.csv", row.names = FALSE, quote = FALSE)
 
 get.spearman = function(df){
   return(data.frame(spearman = cor(df$dist.hours.distances, df$hue.dist)))

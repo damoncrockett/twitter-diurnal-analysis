@@ -4,7 +4,7 @@
 library(data.table)
 library(plyr)
 library(ggplot2)
-dt = fread("~/Documents/twitter_data_grant/processedData/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
+dt = fread("./data/Top_60_faces_alt_and_alt_tree_HSV_modes.csv", header = TRUE)
 dt.clean = na.omit(dt)
 
 normalized.num.faces = function(df){
@@ -14,6 +14,9 @@ normalized.num.faces = function(df){
 }
 
 faces.hours = ddply(dt.clean, .(hour, city), normalized.num.faces)
+
+write.csv(faces.hours, file = "./data/face_hours.csv", row.names = FALSE, quote = FALSE)
+
 
 p = ggplot(faces.hours, aes(x = as.factor(hour), y = num.faces/num.rows)) + 
   geom_point(size = .8) + facet_wrap(~city, scales = "free", nrow = 6) + 
