@@ -1,2 +1,4 @@
 *.csv
 *.png
+!./data/features/face-features/city_faces.csv
+!./data/features/face-features/city_diurnal_faces_entropies.csv
